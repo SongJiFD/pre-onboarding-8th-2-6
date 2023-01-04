@@ -1,51 +1,98 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import BoardWriteUI from './BoardWrite.presenter';
 
 const BoardWrite = () => {
-  const [issue, setIssue] = useState('');
+  const [issue, setIssue] = useState(0);
   const [title, setTitle] = useState('');
   const [contents, setContents] = useState('');
   const [deadLine, setDeadline] = useState('');
   const [manager, setManager] = useState('');
 
+  useEffect(() => {
+    console.log(JSON.parse(localStorage.getItem('data')));
+    setIssue(Math.max(...JSON.parse(localStorage.getItem('data')).map(data => Number(data.id))));
+  }, [setIssue]);
+
   const onChangeIssueInput = event => {
-    localStorage.setItem('data', [{ id: '', title: '', des: '', end: '', status: '', assign: '' }]);
+    localStorage.setItem('data', [
+      { id: '', title: '', contents: '', deadLine: '', status: '', manager: '', order: '' },
+    ]);
   };
 
-  const onChangeTitleInput = event => {
+  const onChangeTitle = event => {
     setTitle(event.target.value);
   };
-  const onChangeContentsInput = event => {
+  const onChangeContents = event => {
     setContents(event.target.value);
   };
-  // const onChangeDeadLineInput = event => {
-  //   setDeadline(event.target.value);
-  // }; 날짜지정이 가능해야해
-  const onChangeManagerInput = event => {
-    setManager(event.target.value);
+  const onChangeDeadline = event => {
+    setDeadline(event.target.value);
   };
 
-  const onClickSubmit = async () => {
-    const errors = {
-      Title: '제목을 입력해주세요',
-      Contents: '내용을 입력해주세요',
-      Manager: '담당자를 입력해주세요',
-      DeadLine: '마감일을 지정해주세요',
-    };
+  const onChangeSearchManager = event => {
+    //
   };
-  const onClickUpdate = async () => {
-    const currentFiles = JSON.stringify(fileUrls);
-    const defaultFiles = JSON.stringify(props.data);
-    const isChangedFiles = currentFiles !== defaultFiles;
+
+  const onClickSubmit = () => {
+    // const errors = {
+    //   Title: '제목을 입력해주세요',
+    //   Contents: '내용을 입력해주세요',
+    //   Manager: '담당자를 입력해주세요',
+    //   DeadLine: '마감일을 지정해주세요',
+    // };
+    const data = {
+      id: issue + 1,
+      title,
+      contents,
+      deadLine,
+      status: 'TODO',
+      manager,
+      order: JSON.parse(localStorage.getItem('data'))
+        ? JSON.parse(localStorage.getItem('data')).filter(el => el.status === 'TODO').length + 1
+        : 1,
+    };
+    localStorage.setItem(
+      'data',
+      JSON.stringify(
+        localStorage.getItem('data')
+          ? JSON.parse(localStorage.getItem('data')).concat(data)
+          : [data]
+      )
+    );
+    setIssue(issue + 1);
+  };
+
+  const onClickUpdate = event => {
+    const original = JSON.parse(localStorage.getItem('data')).filter(
+      el => el.id === event.currentTarget.id
+    );
+    const newData = {
+      id: original.id,
+      title,
+      contents,
+      deadLine,
+      status: original.status,
+      manager,
+      order: original.order,
+    };
+    localStorage.setItem(
+      'data',
+      JSON.stringify(
+        JSON.parse(localStorage.getItem('data'))
+          .filter(el => el.id !== event.currentTarget.id)
+          .concat(newData)
+      )
+    );
   };
 
   return (
     <BoardWriteUI
+      issue={issue}
       // onChangeIssueInput={onChangeIssueInput}
-      onChangeTitleInput={onChangeTitleInput}
-      onChangeContentsInput={onChangeContentsInput}
-      // onChangeDeadLineInput={onChangeDeadLineInput}
-      onChangeManagerInput={onChangeManagerInput}
+      onChangeTitle={onChangeTitle}
+      onChangeContents={onChangeContents}
+      onChangeDeadline={onChangeDeadline}
+      onChangeSearchManager={onChangeSearchManager}
       onClickSubmit={onClickSubmit}
       onClickUpdate={onClickUpdate}
     />

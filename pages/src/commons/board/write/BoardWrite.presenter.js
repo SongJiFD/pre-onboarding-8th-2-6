@@ -13,14 +13,19 @@ const BoardWriteUI = props => {
                 id="manager"
                 type="text"
                 placeholder="담당자를 입력해주세요"
-                onChange={props.onChangeInputs}
+                onChange={props.onChangeSearchManager}
                 // defaultValue={props.data?.}
               />
             </s.InputWrapper>
           </s.WriterWrapper>
           <s.IssueNumberWrapepr>
             <s.Label>이슈 번호</s.Label>
-            <s.Number id="IssueNumber" type="number" defaultValue={props.data} disabled value />
+            <s.Number
+              id="IssueNumber"
+              type="number"
+              defaultValue={String(props.issue + 1)}
+              disabled
+            />
           </s.IssueNumberWrapepr>
           <s.InputWrapper>
             <s.Label>제목</s.Label>
@@ -28,8 +33,7 @@ const BoardWriteUI = props => {
               id="title"
               type="text"
               placeholder="제목을 입력해주세요"
-              onChange={props.onChangeInputs}
-              // defaultValue={props.data?.}
+              onChange={props.onChangeTitle}
             />
           </s.InputWrapper>
           <s.InputWrapper>
@@ -38,18 +42,12 @@ const BoardWriteUI = props => {
               id="contents"
               type="text"
               placeholder="상세 내용을 입력해주세요"
-              onChange={props.onChangeInputs}
-              // defaultValue={props.data?}
+              onChange={props.onChangeContents}
             />
           </s.InputWrapper>
           <s.InputWrapper>
             <s.Label>마감일</s.Label>
-            <s.DeadLine
-              id="DeadLine"
-              type="datetime-local"
-              onChange={props.onChangeInputs}
-              // defaultValue={props.data?}
-            />
+            <s.DeadLine id="DeadLine" type="datetime-local" onChange={props.onChangeDeadline} />
           </s.InputWrapper>
           <s.ButtonWrapper>
             <s.SubmitButton
