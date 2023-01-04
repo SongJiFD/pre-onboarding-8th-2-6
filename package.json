@@ -9,12 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "13.1.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "@emotion/core": "^11.0.0",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "antd": "^5.1.2",
+    "axios": "^1.2.2",
+    "next": "12.1.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
   },
   "devDependencies": {
-    "eslint": "8.31.0",
-    "eslint-config-next": "13.1.1"
+    "eslint": "^8.31.0",
+    "eslint-config-next": "13.1.1",
+    "prettier": "2.8.1"
   }
 }
